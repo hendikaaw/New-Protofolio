@@ -98,7 +98,7 @@
             min-height: 100vh;
         }
 
-        /* AMBIENT GLOW BACKGROUND ORBS (APPLE-STYLE DEPTH) */
+        /* AMBIENT GLOW BACKGROUND ORBS */
         .ambient-glow {
             position: fixed;
             border-radius: 50%;
@@ -149,7 +149,7 @@
         .wipe-block:nth-child(1) { transition-delay: 0.0s; } .wipe-block:nth-child(2) { transition-delay: 0.08s; } .wipe-block:nth-child(3) { transition-delay: 0.04s; } .wipe-block:nth-child(4) { transition-delay: 0.12s; } .wipe-block:nth-child(5) { transition-delay: 0.06s; }
         .transition-wipe.in .wipe-block { transform: translateY(0); } .transition-wipe.out .wipe-block { transform: translateY(100%); } .transition-wipe.reset .wipe-block { transition: none; transform: translateY(-100%); }
 
-        /* COMMAND PALETTE (CTRL+K) - GLASSMORPHISM */
+        /* COMMAND PALETTE (CTRL+K) */
         #cmd-palette-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); z-index: 11000; display: flex; justify-content: center; align-items: flex-start; padding-top: 12vh; opacity: 0; pointer-events: none; transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         #cmd-palette-overlay.active { opacity: 1; pointer-events: auto; }
         #cmd-palette { width: 90%; max-width: 600px; background: var(--glass-bg); backdrop-filter: blur(25px) saturate(180%); -webkit-backdrop-filter: blur(25px) saturate(180%); border: 1px solid var(--glass-border); border-radius: 20px; box-shadow: var(--shadow), 0 0 0 1px rgba(255,255,255,0.1) inset; overflow: hidden; transform: scale(0.95) translateY(-20px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -182,8 +182,18 @@
             transition: all 0.3s ease; 
         }
         .header-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--fg); cursor: pointer; }
-        .logo-media { width: 38px; height: 38px; object-fit: cover; border-radius: 50%; border: 1.5px solid var(--glass-border); transition: transform 0.3s ease, box-shadow 0.3s ease; background-color: var(--border); }
-        .logo-media:hover { transform: scale(1.1) rotate(5deg); box-shadow: 0 0 15px var(--accent); }
+        
+        /* FOTO PROFIL GIF (PP KOCAK) */
+        .logo-media { 
+            width: 42px; 
+            height: 42px; 
+            object-fit: cover; 
+            border-radius: 50%; 
+            border: 2px solid var(--glass-border); 
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; 
+            background-color: var(--border); 
+        }
+        .logo-media:hover { transform: scale(1.18) rotate(8deg); box-shadow: 0 0 18px var(--accent); }
         
         .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; z-index: 101; padding: 5px; }
         .hamburger span { width: 22px; height: 2px; background-color: var(--fg); transition: all 0.3s ease; border-radius: 2px; }
@@ -234,11 +244,29 @@
             transform: translateY(-3px);
         }
 
-        /* HERO & TERMINAL */
-        .hero-text { margin-bottom: 35px; }
+        /* HERO & TITLE GIF BANNER */
+        .hero-text { margin-bottom: 25px; }
+        
+        .title-gif-banner {
+            width: 100%;
+            max-height: 160px;
+            object-fit: cover;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            margin-bottom: 15px;
+            display: block;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        .title-gif-banner:hover {
+            transform: scale(1.01);
+            border-color: var(--accent);
+        }
+
         .hero-text h1 { font-size: 2.2rem; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; background: linear-gradient(135deg, var(--fg) 60%, var(--muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero-text p { color: var(--muted); font-size: 1.05rem; font-weight: 400; }
         
+        /* TERMINAL STYLING */
         .terminal {
             background: var(--term-bg); 
             backdrop-filter: blur(20px);
@@ -249,8 +277,8 @@
             font-size: 0.88rem;
             display: flex; 
             flex-direction: column; 
-            height: 60vh; 
-            min-height: 420px;
+            height: 55vh; 
+            min-height: 400px;
             box-shadow: var(--shadow); 
             position: relative; 
             z-index: 10;
@@ -329,7 +357,7 @@
         .contact-box a { color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--muted); margin-right: 20px; font-size: 0.98rem; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
         .contact-box a:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
-        /* STATUS BAR (GLASS BOTTOM DOCK) */
+        /* STATUS BAR */
         #status-bar { 
             position: fixed; 
             bottom: 0; 
@@ -391,7 +419,7 @@
             .terminal { height: 52vh; min-height: 360px; transform: none !important; } 
             .resume-item { flex-direction: column; gap: 0.4rem; } 
             .resume-date { font-size: 0.82rem; } 
-            .about-banner { max-height: 180px; }
+            .about-banner, .title-gif-banner { max-height: 180px; }
             
             #status-bar { padding: 8px 14px; padding-bottom: calc(8px + env(safe-area-inset-bottom)); font-size: 0.72rem; } 
             .status-encoding, .hide-mobile { display: none; } 
@@ -436,13 +464,13 @@
     <!-- FLOATING APPLE GLASS HEADER -->
     <header>
         <div class="header-brand" onclick="navigate('terminal')">
-            <!-- Profil GIF ditambahkan di sini menggantikan video logo -->
-            <img src="assets/profile.gif" alt="Profile" class="logo-media">
+            <!-- FOTO PROFIL GIF (PP KOCAK) -->
+            <img src="assets/profile.gif" alt="Profile GIF" class="logo-media">
         </div>
         <div class="hamburger" id="hamburger-btn"><span></span><span></span><span></span></div>
         <nav id="navbar">
-            <a onclick="navigate('terminal')" id="nav-terminal"><i class="fa-solid fa-terminal"></i> terminal</a>
-            <a onclick="navigate('about')" class="active" id="nav-about"><i class="fa-solid fa-user"></i> about</a>
+            <a onclick="navigate('terminal')" class="active" id="nav-terminal"><i class="fa-solid fa-terminal"></i> terminal</a>
+            <a onclick="navigate('about')" id="nav-about"><i class="fa-solid fa-user"></i> about</a>
             <a onclick="navigate('experience')" id="nav-experience"><i class="fa-solid fa-briefcase"></i> experience</a>
             <a onclick="navigate('certificates')" id="nav-certificates"><i class="fa-solid fa-certificate"></i> certificates</a>
             <a onclick="navigate('projects')" id="nav-projects"><i class="fa-solid fa-code"></i> projects</a>
@@ -452,8 +480,10 @@
 
     <main>
         <!-- TERMINAL PAGE -->
-        <div id="terminal-page" class="page">
+        <div id="terminal-page" class="page active">
             <div class="hero-text">
+                <!-- TITLE GIF BANNER (GIF BANNER ATAS YANG SERASI SAMA PP) -->
+                <img src="assets/title.gif" alt="Title Banner GIF" class="title-gif-banner">
                 <h1 class="scramble-text" data-value="Hendika Adhi Wibawanta.">Hendika Adhi Wibawanta.</h1>
                 <p>Software Engineer. Membangun sistem yang minimalis, efisien, dan terstruktur.</p>
             </div>
@@ -495,7 +525,7 @@
         </div>
 
         <!-- ABOUT PAGE -->
-        <div id="about-page" class="page active">
+        <div id="about-page" class="page">
             <h2 class="page-title scramble-text" data-value="/about">/about</h2>
             <img src="assets/banner.gif" alt="About Banner" class="about-banner">
             <div class="glass-card about-text">
@@ -529,7 +559,7 @@
         <!-- CERTIFICATES PAGE -->
         <div id="certificates-page" class="page">
             <h2 class="page-title scramble-text" data-value="/certificates">/certificates</h2>
-            <p style="color: var(--muted); margin-bottom: 1.5rem;">Berikut adalah beberapa sertifikasi profesional yang telah saya selesaikan. </p>
+            <p style="color: var(--muted); margin-bottom: 1.5rem;">Berikut adalah beberapa sertifikasi profesional yang telah saya selesaikan.</p>
             <div class="resume-list">
                 <div class="glass-card resume-item">
                     <div class="resume-date"><i class="fa-regular fa-calendar" style="margin-right: 5px;"></i> Mei 2023</div>
@@ -567,7 +597,7 @@
     <!-- STATUS BAR -->
     <div id="status-bar">
         <div class="status-left">
-            <span class="status-path" id="status-path"><i class="fa-regular fa-folder-open"></i> ~/portfolio/about</span>
+            <span class="status-path" id="status-path"><i class="fa-regular fa-folder-open"></i> ~/portfolio/terminal</span>
         </div>
         <div class="status-right">
             <span class="status-encoding">utf-8</span>
@@ -678,7 +708,7 @@
             }
         });
 
-        // 👑 IMPLEMENTASI SNAKE GAME ENGINE
+        // SNAKE GAME ENGINE
         let isGaming = false;
         let snakeInterval;
         let snakeGame = { w: 30, h: 12, snake: [], food: {x:0, y:0}, dir: {x:1, y:0}, nextDir: {x:1, y:0}, score: 0, boardElement: null };
@@ -755,7 +785,7 @@
             else if(e.key.toLowerCase() === 'q') endSnake("Game aborted.");
         });
 
-        // 👑 FULL LINUX COMMANDS
+        // FULL LINUX COMMANDS
         let isRoot = false; let isAwaitingSudo = false; const SUDO_PASS = "h3nd1k4";
 
         function updatePrompt() { 
@@ -1039,7 +1069,7 @@
             }
         });
 
-        window.onload = () => { scrambleText(document.querySelector('#about-page .scramble-text')); updatePrompt(); };
+        window.onload = () => { scrambleText(document.querySelector('#terminal-page .scramble-text')); updatePrompt(); };
         document.getElementById('terminal-window').addEventListener('click', (e) => { if(!e.target.closest('.term-header') && !isVim && !isGaming) input.focus(); });
     </script>
 </body>
