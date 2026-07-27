@@ -11,193 +11,225 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     
-    <!-- Stylesheet Eksternal -->
-    <link rel="stylesheet" href="styles.css">
-
     <script>
         const savedTheme = localStorage.getItem('hendika-theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
     </script>
+
+    <style>
+        /* ======================================================== */
+        /* THEME ENGINE & APPLE GLASSMORPHISM SYSTEM                */
+        /* ======================================================== */
+        :root { 
+            --bg: #090a0f; --fg: #f3f4f6; --muted: #9ca3af; 
+            --border: rgba(255, 255, 255, 0.12); --hover: rgba(255, 255, 255, 0.08); 
+            --accent: #10b981; --accent-rgb: 16, 185, 129; --gemini: #c084fc; 
+            --term-bg: rgba(12, 14, 20, 0.75); --glass-bg: rgba(20, 25, 35, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.15); --card-bg: rgba(255, 255, 255, 0.03);
+            --glow-color: rgba(16, 185, 129, 0.25); --shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        [data-theme="maroon"] { 
+            --bg: #140404; --fg: #fce8e8; --muted: #c48e8e; 
+            --border: rgba(255, 85, 85, 0.2); --hover: rgba(255, 77, 77, 0.12); 
+            --accent: #ff4d4d; --accent-rgb: 255, 77, 77; --gemini: #ffb3b3; 
+            --term-bg: rgba(25, 5, 5, 0.85); --glass-bg: rgba(35, 10, 10, 0.6);
+            --glass-border: rgba(255, 77, 77, 0.25); --card-bg: rgba(255, 77, 77, 0.04);
+            --glow-color: rgba(255, 77, 77, 0.3);
+        }
+
+        [data-theme="cyberpunk"] { 
+            --bg: #070210; --fg: #e2e8f0; --muted: #8b72be; 
+            --border: rgba(0, 240, 255, 0.2); --hover: rgba(0, 240, 255, 0.1); 
+            --accent: #00f0ff; --accent-rgb: 0, 240, 255; --gemini: #ff00ea; 
+            --term-bg: rgba(10, 2, 22, 0.85); --glass-bg: rgba(20, 5, 40, 0.6);
+            --glass-border: rgba(0, 240, 255, 0.25); --card-bg: rgba(0, 240, 255, 0.04);
+            --glow-color: rgba(0, 240, 255, 0.3);
+        }
+
+        [data-theme="light"] { 
+            --bg: #f8fafc; --fg: #0f172a; --muted: #64748b; 
+            --border: rgba(0, 0, 0, 0.1); --hover: rgba(0, 0, 0, 0.05); 
+            --accent: #2563eb; --accent-rgb: 37, 99, 235; --gemini: #7c3aed; 
+            --term-bg: rgba(255, 255, 255, 0.85); --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(0, 0, 0, 0.1); --card-bg: rgba(255, 255, 255, 0.5);
+            --glow-color: rgba(37, 99, 235, 0.15); --shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg); color: var(--fg); font-family: 'Inter', sans-serif; line-height: 1.6; padding-bottom: 70px; overflow-x: hidden; transition: all 0.4s ease; min-height: 100vh; }
+        
+        .ambient-glow { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; opacity: 0.4; animation: floatGlow 18s ease-in-out infinite alternate; }
+        .glow-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, var(--accent) 0%, transparent 70%); }
+        .glow-2 { bottom: -15%; right: -10%; width: 55vw; height: 55vw; background: radial-gradient(circle, var(--gemini) 0%, transparent 70%); animation-delay: -9s; }
+        @keyframes floatGlow { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(60px, 40px) scale(1.1); } }
+
+        /* HEADER DOCK */
+        header { position: sticky; top: 20px; margin: 0 auto; width: 90%; max-width: 1000px; padding: 0.8rem 1.5rem; display: flex; justify-content: space-between; align-items: center; background: var(--glass-bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 999px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 100; }
+        .header-brand { font-weight: 700; font-size: 1.2rem; cursor: pointer; color: var(--fg); }
+        nav { display: flex; gap: 0.5rem; }
+        nav a { color: var(--muted); text-decoration: none; font-size: 0.88rem; font-weight: 500; padding: 8px 16px; border-radius: 999px; cursor: pointer; transition: all 0.25s; }
+        nav a:hover, nav a.active { color: var(--fg); background: var(--hover); }
+        nav a.active { border: 1px solid var(--glass-border); color: var(--accent); }
+
+        /* MAIN & TERMINAL */
+        main { max-width: 900px; margin: 30px auto 0 auto; padding: 20px; position: relative; z-index: 1; }
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.5s forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        h2.page-title { font-size: 1.3rem; color: var(--accent); margin-bottom: 1.5rem; font-family: 'JetBrains Mono', monospace; }
+        .glass-card { background: var(--card-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 18px; padding: 1.5rem; margin-bottom: 1rem; }
+        
+        .terminal { background: var(--term-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 16px; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; display: flex; flex-direction: column; height: 60vh; min-height: 420px; overflow: hidden; box-shadow: var(--shadow); }
+        .term-header { padding: 12px 18px; background: rgba(0,0,0,0.2); border-bottom: 1px solid var(--glass-border); color: var(--muted); display: flex; justify-content: space-between; }
+        .term-body { padding: 18px; overflow-y: auto; flex-grow: 1; color: var(--fg); }
+        .input-line { display: flex; margin-top: 10px; }
+        .prompt { color: var(--accent); margin-right: 10px; }
+        #cmd-input { background: transparent; border: none; color: var(--fg); font-family: inherit; font-size: inherit; outline: none; flex-grow: 1; width: 100%; }
+
+        /* STATUS BAR */
+        #status-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--glass-bg); backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); padding: 10px 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--muted); z-index: 1000; display: flex; justify-content: space-between; }
+        .theme-switcher { display: flex; gap: 10px; }
+        .theme-btn { width: 16px; height: 16px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
+    </style>
 </head>
 <body>
 
-    <!-- Ambient Glow Orbs -->
     <div class="ambient-glow glow-1"></div>
     <div class="ambient-glow glow-2"></div>
 
-    <!-- Command Palette (CTRL+K) -->
-    <div id="cmd-palette-overlay">
-        <div id="cmd-palette">
-            <input type="text" id="cmd-search" placeholder="Type a command or page name..." autocomplete="off">
-            <ul class="cmd-list" id="cmd-list">
-                <li data-target="terminal" class="selected"><span><i class="fa-solid fa-terminal" style="margin-right:8px;"></i> Go to Terminal</span> <span class="cmd-shortcut">⏎</span></li>
-                <li data-target="about"><span><i class="fa-solid fa-user" style="margin-right:8px;"></i> Go to About</span></li>
-                <li data-target="experience"><span><i class="fa-solid fa-briefcase" style="margin-right:8px;"></i> Go to Experience</span></li>
-                <li data-target="certificates"><span><i class="fa-solid fa-certificate" style="margin-right:8px;"></i> Go to Certificates</span></li>
-                <li data-target="projects"><span><i class="fa-solid fa-code" style="margin-right:8px;"></i> Go to Projects</span></li>
-                <li data-target="contact"><span><i class="fa-solid fa-envelope" style="margin-right:8px;"></i> Go to Contact</span></li>
-                <li data-action="download"><span><i class="fa-solid fa-file-arrow-down" style="margin-right:8px;"></i> Download Resume</span> <span class="cmd-shortcut">PDF</span></li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- Transition Wipe -->
-    <div class="transition-wipe" id="wipe-transition">
-        <div class="wipe-block" data-text="SEC_01 // SYS_READY"></div>
-        <div class="wipe-block" data-text="SEC_02 // MNT_VFS"></div>
-        <div class="wipe-block" data-text="SEC_03 // OVERRIDE"></div>
-        <div class="wipe-block" data-text="SEC_04 // FETCH_DATA"></div>
-        <div class="wipe-block" data-text="SEC_05 // RENDER_DOM"></div>
-    </div>
-
-    <!-- Floating Navigation Header -->
     <header>
-        <div class="header-brand" onclick="navigate('terminal')">
-            <video src="assets/logo.mp4" class="logo-media" autoplay loop muted playsinline></video>
-        </div>
-        <div class="hamburger" id="hamburger-btn"><span></span><span></span><span></span></div>
+        <div class="header-brand" onclick="navigate('terminal')">Hendika.OS</div>
         <nav id="navbar">
-            <a onclick="navigate('terminal')" id="nav-terminal"><i class="fa-solid fa-terminal"></i> terminal</a>
-            <a onclick="navigate('about')" class="active" id="nav-about"><i class="fa-solid fa-user"></i> about</a>
-            <a onclick="navigate('experience')" id="nav-experience"><i class="fa-solid fa-briefcase"></i> experience</a>
-            <a onclick="navigate('certificates')" id="nav-certificates"><i class="fa-solid fa-certificate"></i> certificates</a>
-            <a onclick="navigate('projects')" id="nav-projects"><i class="fa-solid fa-code"></i> projects</a>
-            <a onclick="navigate('contact')" id="nav-contact"><i class="fa-solid fa-paper-plane"></i> contact</a>
+            <a onclick="navigate('terminal')" class="active" id="nav-terminal">Terminal</a>
+            <a onclick="navigate('about')" id="nav-about">About</a>
+            <a onclick="navigate('experience')" id="nav-experience">Experience</a>
         </nav>
     </header>
 
     <main>
-        <!-- Terminal Page -->
-        <div id="terminal-page" class="page">
-            <div class="hero-text">
-                <h1 class="scramble-text" data-value="Hendika Adhi Wibawanta.">Hendika Adhi Wibawanta.</h1>
-                <p>Software Engineer. Membangun sistem yang minimalis, efisien, dan terstruktur.</p>
-            </div>
-            
-            <div class="terminal" id="terminal-window">
-                <div class="term-header" id="term-header" title="Drag to move">
-                    <div class="window-dots">
-                        <span class="dot dot-close"></span>
-                        <span class="dot dot-min"></span>
-                        <span class="dot dot-max"></span>
-                    </div>
-                    <span>~/portfolio/hendika</span>
-                    <span>bash - 80x24</span>
+        <!-- TERMINAL PAGE -->
+        <div id="terminal-page" class="page active">
+            <h2 class="page-title">~/portfolio/terminal</h2>
+            <div class="terminal">
+                <div class="term-header">
+                    <span>Terminal - bash</span>
                 </div>
-                
-                <div class="term-container">
-                    <div class="term-body" id="terminal-body">
-                        <div id="output">
-                            <div style="margin-bottom: 5px;">Hendika OS [Version 1.0.0]</div>
-                            <div style="margin-bottom: 5px;" id="welcome-msg">(c) 2024 Hendika. System ready.</div>
-                            <div style="margin-bottom: 15px;">Type <span style="color:var(--accent);">help</span> to see available shell commands.</div>
-                        </div>
-                        <div class="input-line" id="term-input-container">
-                            <span class="prompt" id="term-prompt">guest@hendika-os:~ $</span>
-                            <input type="text" id="cmd-input" autocomplete="off" autofocus spellcheck="false">
-                        </div>
+                <div class="term-body" id="terminal-body" onclick="document.getElementById('cmd-input').focus()">
+                    <div id="output">
+                        <div>Hendika OS [Version 1.0.0]</div>
+                        <div style="margin-bottom: 15px;">System ready. Type <span style="color:var(--accent);">help</span> to see available commands.</div>
                     </div>
-
-                    <!-- Vim Editor UI -->
-                    <div id="vim-ui">
-                        <textarea id="vim-textarea" spellcheck="false"></textarea>
-                        <div id="vim-status">
-                            <span id="vim-mode">"filename.txt" [NORMAL]</span>
-                            <span id="vim-cmd"></span>
-                        </div>
+                    <div class="input-line">
+                        <span class="prompt" id="term-prompt">guest@hendika-os:~ $</span>
+                        <input type="text" id="cmd-input" autocomplete="off" autofocus spellcheck="false">
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- About Page -->
-        <div id="about-page" class="page active">
-            <h2 class="page-title scramble-text" data-value="/about">/about</h2>
-            <img src="assets/banner.gif" alt="About Banner" class="about-banner">
-            <div class="glass-card about-text">
-                <p>Halo, saya Hendika Adhi Wibawanta. Saya adalah seorang developer yang berfokus pada kesederhanaan dan performa. Saya percaya bahwa kode terbaik adalah kode yang mudah dibaca dan sistem terbaik adalah yang tidak memiliki kompleksitas berlebih.</p>
-            </div>
-            <div class="skills" style="margin-top: 1.5rem;">
-                <span class="skill-tag"><i class="fa-brands fa-js"></i> JavaScript / TS</span> 
-                <span class="skill-tag"><i class="fa-brands fa-golang"></i> Go</span> 
-                <span class="skill-tag"><i class="fa-brands fa-python"></i> Python</span> 
-                <span class="skill-tag"><i class="fa-solid fa-database"></i> PostgreSQL</span> 
-                <span class="skill-tag"><i class="fa-brands fa-docker"></i> Docker</span> 
-                <span class="skill-tag"><i class="fa-brands fa-linux"></i> Linux</span>
+        <!-- ABOUT PAGE -->
+        <div id="about-page" class="page">
+            <h2 class="page-title">~/portfolio/about</h2>
+            <div class="glass-card">
+                <p>Halo, saya Hendika Adhi Wibawanta. Saya adalah seorang Software Engineer yang berfokus pada kesederhanaan dan performa. Saya sangat suka bekerja dengan sistem berbasis CLI, arsitektur backend, dan antarmuka minimalis.</p>
             </div>
         </div>
 
-        <!-- Experience Page -->
+        <!-- EXPERIENCE PAGE -->
         <div id="experience-page" class="page">
-            <h2 class="page-title scramble-text" data-value="/experience">/experience</h2>
-            <h3 class="sub-title"><i class="fa-solid fa-briefcase"></i> Work History</h3>
-            <div class="resume-list">
-                <div class="glass-card resume-item">
-                    <div class="resume-date"><i class="fa-regular fa-calendar" style="margin-right: 5px;"></i> 2022 - Present</div>
-                    <div class="resume-content">
-                        <div class="resume-header"><h4>Backend Engineer &mdash; PT Teknologi Nusantara</h4></div>
-                        <p>Merancang dan mengembangkan layanan backend berskala besar. Berhasil meningkatkan performa sistem dan mengelola deployment server secara efisien.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Certificates Page -->
-        <div id="certificates-page" class="page">
-            <h2 class="page-title scramble-text" data-value="/certificates">/certificates</h2>
-            <p style="color: var(--muted); margin-bottom: 1.5rem;">Berikut adalah beberapa sertifikasi profesional yang telah saya selesaikan.</p>
-            <div class="resume-list">
-                <div class="glass-card resume-item">
-                    <div class="resume-date"><i class="fa-regular fa-calendar" style="margin-right: 5px;"></i> Mei 2023</div>
-                    <div class="resume-content">
-                        <div class="resume-header"><h4>AWS Certified Developer - Associate</h4></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Projects Page -->
-        <div id="projects-page" class="page">
-            <h2 class="page-title scramble-text" data-value="/projects">/projects</h2>
-            <div class="project-list">
-                <div class="glass-card project-item">
-                    <div class="resume-header" style="margin-bottom: 0.5rem;">
-                        <h4 class="project-title"><i class="fa-solid fa-layer-group" style="margin-right: 8px; color: var(--accent);"></i> Payment Gateway API</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Contact Page -->
-        <div id="contact-page" class="page">
-            <h2 class="page-title scramble-text" data-value="/contact">/contact</h2>
-            <div class="glass-card contact-box">
-                <p style="color: var(--muted); margin-bottom: 20px;">Tertarik untuk berdiskusi tentang teknologi? Silakan hubungi saya.</p>
-                <a href="mailto:emailanda@domain.com"><i class="fa-solid fa-envelope"></i> email</a> 
-                <a href="https://github.com/username"><i class="fa-brands fa-github"></i> github</a>
-                <span style="color:var(--muted); font-size: 0.8rem; display:block; margin-top:20px;"><i class="fa-solid fa-lightbulb" style="color: var(--accent);"></i> Tip: Tekan <code style="color:var(--fg); background: var(--hover); padding: 2px 6px; border-radius: 4px;">Ctrl+K</code> untuk mencari menu.</span>
+            <h2 class="page-title">~/portfolio/experience</h2>
+            <div class="glass-card">
+                <h4 style="color: var(--fg); margin-bottom: 5px;">Backend Engineer — PT Teknologi Nusantara</h4>
+                <p style="color: var(--muted); font-size: 0.9rem;">2022 - Present</p>
+                <p style="margin-top: 10px;">Merancang dan mengembangkan layanan backend berskala besar. Berhasil meningkatkan performa sistem dan mengelola deployment server secara efisien.</p>
             </div>
         </div>
     </main>
 
-    <!-- Status Bar -->
     <div id="status-bar">
-        <div class="status-left">
-            <span class="status-path" id="status-path"><i class="fa-regular fa-folder-open"></i> ~/portfolio/about</span>
-        </div>
-        <div class="status-right">
-            <span class="status-encoding">utf-8</span>
+        <div><i class="fa-solid fa-folder"></i> <span id="status-path">~/portfolio/terminal</span></div>
+        <div style="display: flex; gap: 15px; align-items: center;">
             <div class="theme-switcher">
-                <span class="theme-btn" style="background:#0a0a0a; border-color: #10b981;" onclick="setTheme('dark')" title="Theme: Hacker Dark"></span>
-                <span class="theme-btn" style="background:#1a0505; border-color: #ff4d4d;" onclick="setTheme('maroon')" title="Theme: Blood Maroon"></span>
-                <span class="theme-btn" style="background:#0b021a; border-color: #00f0ff;" onclick="setTheme('cyberpunk')" title="Theme: Cyberpunk"></span>
-                <span class="theme-btn" style="background:#f4f4f5; border-color: #0056b3;" onclick="setTheme('light')" title="Theme: Light Mode"></span>
+                <span class="theme-btn" style="background:#0a0a0a; border-color: #10b981;" onclick="setTheme('dark')"></span>
+                <span class="theme-btn" style="background:#1a0505; border-color: #ff4d4d;" onclick="setTheme('maroon')"></span>
+                <span class="theme-btn" style="background:#0b021a; border-color: #00f0ff;" onclick="setTheme('cyberpunk')"></span>
+                <span class="theme-btn" style="background:#f4f4f5; border-color: #0056b3;" onclick="setTheme('light')"></span>
             </div>
-            <span class="status-time" id="status-time">00:00:00</span>
+            <span id="clock">00:00</span>
         </div>
     </div>
 
-    <!-- Script Logika Eksternal -->
-    <script src="app.js"></script>
+    <script>
+        // LOGIC TEMA
+        function setTheme(themeName) {
+            document.documentElement.setAttribute('data-theme', themeName);
+            localStorage.setItem('hendika-theme', themeName);
+            print(`<span style="color:var(--accent);">Theme changed to '${themeName}'.</span>`);
+        }
+
+        // JAM STATUS BAR
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+        }, 1000);
+
+        // NAVIGASI
+        function navigate(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId + '-page').classList.add('active');
+            
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+            document.getElementById('nav-' + pageId).classList.add('active');
+            
+            document.getElementById('status-path').innerText = '~/portfolio/' + pageId;
+            if(pageId === 'terminal') setTimeout(() => document.getElementById('cmd-input').focus(), 100);
+        }
+
+        // LOGIC TERMINAL
+        const input = document.getElementById('cmd-input');
+        const output = document.getElementById('output');
+        const terminalBody = document.getElementById('terminal-body');
+        
+        function print(html) {
+            const div = document.createElement('div');
+            div.innerHTML = html;
+            output.appendChild(div);
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+
+        const commands = {
+            'help': 'Available commands: help, clear, whoami, date, theme [dark/maroon/cyberpunk/light], about, experience',
+            'clear': () => { output.innerHTML = ''; return ''; },
+            'whoami': 'guest',
+            'date': () => new Date().toString(),
+            'about': () => { navigate('about'); return 'Navigating to about...'; },
+            'experience': () => { navigate('experience'); return 'Navigating to experience...'; },
+        };
+
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const val = this.value.trim();
+                print(`<span class="prompt">guest@hendika-os:~ $</span> ${val}`);
+                
+                if (val) {
+                    const args = val.toLowerCase().split(' ');
+                    const cmd = args[0];
+                    
+                    if (cmd === 'theme' && args[1]) {
+                        if (['dark','maroon','cyberpunk','light'].includes(args[1])) setTheme(args[1]);
+                        else print('Theme not found. Available: dark, maroon, cyberpunk, light');
+                    } else if (commands[cmd]) {
+                        const res = typeof commands[cmd] === 'function' ? commands[cmd]() : commands[cmd];
+                        if (res) print(res);
+                    } else {
+                        print(`bash: ${cmd}: command not found. Type 'help'.`);
+                    }
+                }
+                this.value = '';
+            }
+        });
+    </script>
 </body>
 </html>
