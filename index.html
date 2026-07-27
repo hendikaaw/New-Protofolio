@@ -436,7 +436,8 @@
     <!-- FLOATING APPLE GLASS HEADER -->
     <header>
         <div class="header-brand" onclick="navigate('terminal')">
-            <video src="assets/logo.mp4" class="logo-media" autoplay loop muted playsinline></video>
+            <!-- Profil GIF ditambahkan di sini menggantikan video logo -->
+            <img src="assets/profile.gif" alt="Profile" class="logo-media">
         </div>
         <div class="hamburger" id="hamburger-btn"><span></span><span></span><span></span></div>
         <nav id="navbar">
@@ -556,8 +557,8 @@
             <h2 class="page-title scramble-text" data-value="/contact">/contact</h2>
             <div class="glass-card contact-box">
                 <p style="color: var(--muted); margin-bottom: 20px;">Tertarik untuk berdiskusi tentang teknologi? Silakan hubungi saya.</p>
-                <a href="mailto:emailanda@domain.com"><i class="fa-solid fa-envelope"></i> email</a> 
-                <a href="https://github.com/username"><i class="fa-brands fa-github"></i> github</a>
+                <a href="mailto:emailhendika@gmail.com"><i class="fa-solid fa-envelope"></i> email</a> 
+                <a href="https://github.com/hendikaaw"><i class="fa-brands fa-github"></i> github</a>
                 <span style="color:var(--muted); font-size: 0.8rem; display:block; margin-top:20px;"><i class="fa-solid fa-lightbulb" style="color: var(--accent);"></i> Tip: Tekan <code style="color:var(--fg); background: var(--hover); padding: 2px 6px; border-radius: 4px;">Ctrl+K</code> untuk mencari menu.</span>
             </div>
         </div>
@@ -597,7 +598,7 @@
             content: {
                 "bio.txt": { type: "file", content: "Halo, saya Hendika Adhi Wibawanta.\nSoftware Engineer pecinta terminal dan gaya minimalis." },
                 "projects": { type: "dir", content: { "gateway_api.go": { type: "file", content: "package main\nimport \"fmt\"\nfunc main() { fmt.Println(\"API Gateway Started\") }" } } },
-                ".secret": { type: "dir", content: { "vip_contact.txt": { type: "file", content: "👑 WELCOME TO THE ROOT CLUB 👑\n---------------------------------\nWhatsApp: +62-800-0000-0000\nSecret Repo: github.com/username/top-secret" } } }
+                ".secret": { type: "dir", content: { "vip_contact.txt": { type: "file", content: "👑 WELCOME TO THE ROOT CLUB 👑\n---------------------------------\nWhatsApp: +62-800-0000-0000\nSecret Repo: github.com/hendikaaw/top-secret" } } }
             }
         };
 
@@ -861,7 +862,7 @@
                 const msg = args.join(" ").toLowerCase(); print(`<span style="color:var(--gemini); font-style:italic;">Gemini is typing...</span>`); input.disabled = true;
                 setTimeout(() => {
                     let reply = (msg.includes("skill") || msg.includes("bisa apa")) ? "Berdasarkan database, Hendika sangat menguasai ekosistem Backend (Go, Python), infrastruktur Docker, dan Linux OS." :
-                                (msg.includes("kontak") || msg.includes("email")) ? "Kamu bisa menghubunginya lewat email emailanda@domain.com" :
+                                (msg.includes("kontak") || msg.includes("email")) ? "Kamu bisa menghubunginya lewat email emailhendika@gmail.com" :
                                 (msg.includes("siapa") || msg.includes("profil")) ? "Hendika adalah seorang Software Engineer yang ahli dalam sistem minimalis." :
                                 "Pertanyaan menarik! Sebagai AI lokal, fokus saya adalah profil Hendika. Coba tanya: 'apa skill hendika?'";
                     print(`<br><span style="color:var(--gemini); font-weight:bold;">[Gemini]:</span> <span style="color:var(--fg);">${reply}</span><br>`);
