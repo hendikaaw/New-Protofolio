@@ -32,15 +32,3 @@ Sistem portofolio web interaktif yang menggabungkan estetika antarmuka modern Ap
 | **Iconography** | Font Awesome 6 CDN | Penyediaan ikonografi antarmuka yang konsisten. |
 | **Typography** | Inter & JetBrains Mono (Google Fonts) | Kombinasi font sans-serif modern dan monospace ala terminal. |
 | **Storage Engine** | Web Storage API (LocalStorage) | Persistensi status Virtual File System dan konfigurasi tema. |
-
----
-
-## Panduan Memulai dan Penggunaan Lokal
-
-Proyek ini dibangun menggunakan teknologi web murni sehingga tidak memerlukan proses kompilasi, *bundling*, atau *dependency installation*.
-
-### 1. Kloning Repositori
-
-```bash
-git clone [https://github.com/username/portfolio.git](https://github.com/username/portfolio.git)
-cd portfolio
