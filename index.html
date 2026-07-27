@@ -315,7 +315,7 @@
         /* RESUME/PROJECTS GLASS LIST */
         .resume-list, .project-list { display: flex; flex-direction: column; gap: 1.2rem; }
         .resume-item { display: flex; gap: 2rem; }
-        .resume-date { min-width: 130px; color: var(--accent); font-size: 0.88rem; font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+        .resume-date { min-width: 140px; color: var(--accent); font-size: 0.88rem; font-family: 'JetBrains Mono', monospace; font-weight: 500; }
         .resume-content { flex-grow: 1; }
         .resume-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.4rem; flex-wrap: wrap; gap: 10px; }
         .resume-header h4 { font-size: 1.1rem; font-weight: 600; color: var(--fg); }
@@ -326,7 +326,7 @@
 
         /* CONTACT */
         .contact-box { max-width: 550px; }
-        .contact-box a { color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--muted); margin-right: 20px; font-size: 0.98rem; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .contact-box a { color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--muted); margin-right: 20px; font-size: 0.98rem; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 12px; }
         .contact-box a:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
         /* STATUS BAR (GLASS BOTTOM DOCK) */
@@ -454,7 +454,7 @@
         <div id="terminal-page" class="page">
             <div class="hero-text">
                 <h1 class="scramble-text" data-value="Hendika Adhi Wibawanta.">Hendika Adhi Wibawanta.</h1>
-                <p>Software Engineer. Membangun sistem yang minimalis, efisien, dan terstruktur.</p>
+                <p>Software Engineer & Teknisi Komputer. Membangun sistem yang minimalis, efisien, dan terstruktur.</p>
             </div>
             
             <div class="terminal" id="terminal-window">
@@ -498,7 +498,7 @@
             <h2 class="page-title scramble-text" data-value="/about">/about</h2>
             <img src="assets/banner.gif" alt="About Banner" class="about-banner">
             <div class="glass-card about-text">
-                <p>Halo, saya Hendika Adhi Wibawanta. Saya adalah seorang developer yang berfokus pada kesederhanaan dan performa. Saya percaya bahwa kode terbaik adalah kode yang mudah dibaca dan sistem terbaik adalah yang tidak memiliki kompleksitas berlebih.</p>
+                <p>Halo, saya Hendika Adhi Wibawanta. Saya adalah seorang developer dan teknisi komputer yang berfokus pada kesederhanaan dan performa. Saya percaya bahwa kode terbaik adalah kode yang mudah dibaca dan sistem terbaik adalah yang tidak memiliki kompleksitas berlebih.</p>
             </div>
             <div class="skills" style="margin-top: 1.5rem;">
                 <span class="skill-tag"><i class="fa-brands fa-js"></i> JavaScript / TS</span> 
@@ -507,6 +507,7 @@
                 <span class="skill-tag"><i class="fa-solid fa-database"></i> PostgreSQL</span> 
                 <span class="skill-tag"><i class="fa-brands fa-docker"></i> Docker</span> 
                 <span class="skill-tag"><i class="fa-brands fa-linux"></i> Linux</span>
+                <span class="skill-tag"><i class="fa-solid fa-screwdriver-wrench"></i> Computer Hardware & Repair</span>
             </div>
         </div>
 
@@ -522,18 +523,61 @@
                         <p>Merancang dan mengembangkan layanan backend berskala besar. Berhasil meningkatkan performa sistem dan mengelola deployment server secara efisien.</p>
                     </div>
                 </div>
+                <div class="glass-card resume-item">
+                    <div class="resume-date"><i class="fa-regular fa-calendar" style="margin-right: 5px;"></i> 4 Bulan (Magang)</div>
+                    <div class="resume-content">
+                        <div class="resume-header"><h4>Teknisi Komputer &mdash; Kings Computer</h4></div>
+                        <p>Melakukan perawatan, perakitan, *troubleshooting* perangkat keras dan lunak komputer, serta menangani berbagai masalah teknis sistem pelanggan secara langsung.</p>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- CERTIFICATES PAGE -->
         <div id="certificates-page" class="page">
             <h2 class="page-title scramble-text" data-value="/certificates">/certificates</h2>
-            <p style="color: var(--muted); margin-bottom: 1.5rem;">Berikut adalah beberapa sertifikasi profesional yang telah saya selesaikan. </p>
+            <p style="color: var(--muted); margin-bottom: 1.5rem;">Berikut adalah beberapa sertifikasi profesional yang telah saya selesaikan.</p>
             <div class="resume-list">
                 <div class="glass-card resume-item">
-                    <div class="resume-date"><i class="fa-regular fa-calendar" style="margin-right: 5px;"></i> Mei 2023</div>
+                    <div class="resume-date"><i class="fa-solid fa-award" style="margin-right: 5px;"></i> Certificate</div>
                     <div class="resume-content">
-                        <div class="resume-header"><h4>AWS Certified Developer - Associate</h4></div>
+                        <div class="resume-header"><h4>Career Essentials in Generative AI by Microsoft and LinkedIn</h4></div>
+                        <p>Sertifikasi resmi penyelesaian program esensial Generative AI oleh Microsoft dan LinkedIn.</p>
+                    </div>
+                </div>
+                <div class="glass-card resume-item">
+                    <div class="resume-date"><i class="fa-solid fa-award" style="margin-right: 5px;"></i> Certificate</div>
+                    <div class="resume-content">
+                        <div class="resume-header"><h4>Streamlining Your Work with Microsoft Copilot</h4></div>
+                        <p>Sertifikat penyelesaian peningkatan efisiensi kerja menggunakan Microsoft Copilot.</p>
+                    </div>
+                </div>
+                <div class="glass-card resume-item">
+                    <div class="resume-date"><i class="fa-solid fa-award" style="margin-right: 5px;"></i> Certificate</div>
+                    <div class="resume-content">
+                        <div class="resume-header"><h4>Learning Microsoft 365 Copilot</h4></div>
+                        <p>Sertifikat penyelesaian pemahaman dan penggunaan fitur Microsoft 365 Copilot.</p>
+                    </div>
+                </div>
+                <div class="glass-card resume-item">
+                    <div class="resume-date"><i class="fa-solid fa-award" style="margin-right: 5px;"></i> Certificate</div>
+                    <div class="resume-content">
+                        <div class="resume-header"><h4>Ethics in the Age of Generative AI</h4></div>
+                        <p>Sertifikat penyelesaian penerapan etika penggunaan teknologi Generative AI.</p>
+                    </div>
+                </div>
+                <div class="glass-card resume-item">
+                    <div class="resume-date"><i class="fa-solid fa-award" style="margin-right: 5px;"></i> Certificate</div>
+                    <div class="resume-content">
+                        <div class="resume-header"><h4>Cyberkarta CSOW XIII</h4></div>
+                        <p>Sertifikat partisipasi & penyelesaian program Cyberkarta CSOW XIII.</p>
+                    </div>
+                </div>
+                <div class="glass-card resume-item">
+                    <div class="resume-date"><i class="fa-solid fa-award" style="margin-right: 5px;"></i> Certificate</div>
+                    <div class="resume-content">
+                        <div class="resume-header"><h4>ExplorAItion Jogja</h4></div>
+                        <p>Sertifikat keikutsertaan dalam kegiatan ExplorAItion Jogja.</p>
                     </div>
                 </div>
             </div>
@@ -555,9 +599,12 @@
         <div id="contact-page" class="page">
             <h2 class="page-title scramble-text" data-value="/contact">/contact</h2>
             <div class="glass-card contact-box">
-                <p style="color: var(--muted); margin-bottom: 20px;">Tertarik untuk berdiskusi tentang teknologi? Silakan hubungi saya.</p>
-                <a href="mailto:emailanda@domain.com"><i class="fa-solid fa-envelope"></i> email</a> 
-                <a href="https://github.com/username"><i class="fa-brands fa-github"></i> github</a>
+                <p style="color: var(--muted); margin-bottom: 20px;">Tertarik untuk berdiskusi tentang teknologi atau kerja sama? Silakan hubungi saya melalui media berikut:</p>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <a href="mailto:emailhendika@gmail.com"><i class="fa-solid fa-envelope"></i> emailhendika@gmail.com</a> 
+                    <a href="https://github.com/hendikaaw" target="_blank"><i class="fa-brands fa-github"></i> github.com/hendikaaw</a>
+                    <a href="https://instagram.com/hendikaaw" target="_blank"><i class="fa-brands fa-instagram"></i> @hendikaaw</a>
+                </div>
                 <span style="color:var(--muted); font-size: 0.8rem; display:block; margin-top:20px;"><i class="fa-solid fa-lightbulb" style="color: var(--accent);"></i> Tip: Tekan <code style="color:var(--fg); background: var(--hover); padding: 2px 6px; border-radius: 4px;">Ctrl+K</code> untuk mencari menu.</span>
             </div>
         </div>
@@ -595,9 +642,9 @@
         const defaultVfs = {
             name: "~", type: "dir",
             content: {
-                "bio.txt": { type: "file", content: "Halo, saya Hendika Adhi Wibawanta.\nSoftware Engineer pecinta terminal dan gaya minimalis." },
+                "bio.txt": { type: "file", content: "Halo, saya Hendika Adhi Wibawanta.\nSoftware Engineer & Teknisi Komputer pecinta terminal dan gaya minimalis." },
                 "projects": { type: "dir", content: { "gateway_api.go": { type: "file", content: "package main\nimport \"fmt\"\nfunc main() { fmt.Println(\"API Gateway Started\") }" } } },
-                ".secret": { type: "dir", content: { "vip_contact.txt": { type: "file", content: "👑 WELCOME TO THE ROOT CLUB 👑\n---------------------------------\nWhatsApp: +62-800-0000-0000\nSecret Repo: github.com/username/top-secret" } } }
+                ".secret": { type: "dir", content: { "vip_contact.txt": { type: "file", content: "👑 WELCOME TO THE ROOT CLUB 👑\n---------------------------------\nEmail: emailhendika@gmail.com\nGitHub: github.com/hendikaaw\nInstagram: instagram.com/hendikaaw" } } }
             }
         };
 
@@ -860,9 +907,9 @@
                 if (args.length === 0) { print("<span style='color:var(--muted);'>Usage: gemini [your message]</span>"); return; }
                 const msg = args.join(" ").toLowerCase(); print(`<span style="color:var(--gemini); font-style:italic;">Gemini is typing...</span>`); input.disabled = true;
                 setTimeout(() => {
-                    let reply = (msg.includes("skill") || msg.includes("bisa apa")) ? "Berdasarkan database, Hendika sangat menguasai ekosistem Backend (Go, Python), infrastruktur Docker, dan Linux OS." :
-                                (msg.includes("kontak") || msg.includes("email")) ? "Kamu bisa menghubunginya lewat email emailanda@domain.com" :
-                                (msg.includes("siapa") || msg.includes("profil")) ? "Hendika adalah seorang Software Engineer yang ahli dalam sistem minimalis." :
+                    let reply = (msg.includes("skill") || msg.includes("bisa apa")) ? "Berdasarkan database, Hendika menguasai Backend (Go, Python), Docker, Linux OS, serta Hardware & Hardware Repair." :
+                                (msg.includes("kontak") || msg.includes("email")) ? "Kamu bisa menghubunginya lewat email emailhendika@gmail.com, GitHub @hendikaaw, atau Instagram @hendikaaw." :
+                                (msg.includes("siapa") || msg.includes("profil")) ? "Hendika adalah seorang Software Engineer dan Teknisi Komputer." :
                                 "Pertanyaan menarik! Sebagai AI lokal, fokus saya adalah profil Hendika. Coba tanya: 'apa skill hendika?'";
                     print(`<br><span style="color:var(--gemini); font-weight:bold;">[Gemini]:</span> <span style="color:var(--fg);">${reply}</span><br>`);
                     input.disabled = false; input.focus();
