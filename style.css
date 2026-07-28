@@ -1,5 +1,5 @@
 /* ======================================================== */
-/* THEME ENGINE & APPLE GLASSMORPHISM SYSTEM                */
+/* 👑 THEME ENGINE & APPLE GLASSMORPHISM SYSTEM            */
 /* ======================================================== */
 :root { 
     --bg: #090a0f; 
@@ -84,7 +84,7 @@ body {
     min-height: 100vh;
 }
 
-/* AMBIENT GLOW BACKGROUND ORBS */
+/* AMBIENT GLOW BACKGROUND ORBS (APPLE-STYLE DEPTH) */
 .ambient-glow {
     position: fixed;
     border-radius: 50%;
@@ -135,7 +135,7 @@ body::before {
 .wipe-block:nth-child(1) { transition-delay: 0.0s; } .wipe-block:nth-child(2) { transition-delay: 0.08s; } .wipe-block:nth-child(3) { transition-delay: 0.04s; } .wipe-block:nth-child(4) { transition-delay: 0.12s; } .wipe-block:nth-child(5) { transition-delay: 0.06s; }
 .transition-wipe.in .wipe-block { transform: translateY(0); } .transition-wipe.out .wipe-block { transform: translateY(100%); } .transition-wipe.reset .wipe-block { transition: none; transform: translateY(-100%); }
 
-/* COMMAND PALETTE (CTRL+K) */
+/* COMMAND PALETTE (CTRL+K) - GLASSMORPHISM */
 #cmd-palette-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); z-index: 11000; display: flex; justify-content: center; align-items: flex-start; padding-top: 12vh; opacity: 0; pointer-events: none; transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
 #cmd-palette-overlay.active { opacity: 1; pointer-events: auto; }
 #cmd-palette { width: 90%; max-width: 600px; background: var(--glass-bg); backdrop-filter: blur(25px) saturate(180%); -webkit-backdrop-filter: blur(25px) saturate(180%); border: 1px solid var(--glass-border); border-radius: 20px; box-shadow: var(--shadow), 0 0 0 1px rgba(255,255,255,0.1) inset; overflow: hidden; transform: scale(0.95) translateY(-20px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -298,10 +298,10 @@ h3.sub-title { font-size: 1.05rem; font-weight: 600; color: var(--fg); margin: 2
 .skill-tag i { color: var(--accent); }
 .skill-tag:hover { color: #fff; background-color: var(--accent); border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 5px 15px var(--glow-color); }
 
-/* RESUME & PROJECTS GLASS LIST */
+/* RESUME/PROJECTS GLASS LIST */
 .resume-list, .project-list { display: flex; flex-direction: column; gap: 1.2rem; }
 .resume-item { display: flex; gap: 2rem; }
-.resume-date { min-width: 130px; color: var(--accent); font-size: 0.88rem; font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+.resume-date { min-width: 140px; color: var(--accent); font-size: 0.88rem; font-family: 'JetBrains Mono', monospace; font-weight: 500; }
 .resume-content { flex-grow: 1; }
 .resume-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.4rem; flex-wrap: wrap; gap: 10px; }
 .resume-header h4 { font-size: 1.1rem; font-weight: 600; color: var(--fg); }
@@ -312,7 +312,7 @@ h3.sub-title { font-size: 1.05rem; font-weight: 600; color: var(--fg); margin: 2
 
 /* CONTACT */
 .contact-box { max-width: 550px; }
-.contact-box a { color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--muted); margin-right: 20px; font-size: 0.98rem; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+.contact-box a { color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--muted); margin-right: 20px; font-size: 0.98rem; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 12px; }
 .contact-box a:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
 /* STATUS BAR (GLASS BOTTOM DOCK) */
@@ -385,9 +385,145 @@ h3.sub-title { font-size: 1.05rem; font-weight: 600; color: var(--fg); margin: 2
     .theme-btn { width: 18px; height: 18px; } 
 }
 
-.neofetch-container { display:flex; align-items: flex-start; gap:25px; font-family:'JetBrains Mono', monospace; font-size:12px; line-height:1.3; margin: 15px 0; } 
-.neofetch-logo { color:var(--accent); font-weight:bold; margin:0; line-height:1.2; } 
-.neofetch-info { color:var(--fg); display:flex; flex-direction:column; } 
-.color-blocks { margin-top:8px; display:flex; } 
-.cb { width:16px; height:16px; } 
-@media (max-width: 480px) { .neofetch-container { flex-direction: column; gap: 10px; } }
+.neofetch-container { display:flex; align-items: flex-start; gap:25px; font-family:'JetBrains Mono', monospace; font-size:12px; line-height:1.3; margin: 15px 0; } .neofetch-logo { color:var(--accent); font-weight:bold; margin:0; line-height:1.2; } .neofetch-info { color:var(--fg); display:flex; flex-direction:column; } .color-blocks { margin-top:8px; display:flex; } .cb { width:16px; height:16px; } @media (max-width: 480px) { .neofetch-container { flex-direction: column; gap: 10px; } }
+/* ======================================================== */
+/* HACK LOGIN EASTER EGG                                    */
+/* ======================================================== */
+.hack-login-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 12000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+.hack-login-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.hack-login-panel {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border-top: 1px solid var(--glass-border);
+    border-radius: 24px 24px 0 0;
+    box-shadow: var(--shadow), 0 0 0 1px rgba(255,255,255,0.08) inset;
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 40px 20px calc(40px + env(safe-area-inset-bottom));
+}
+.hack-login-overlay.active .hack-login-panel {
+    transform: translateY(0);
+}
+.hack-login-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+}
+.hack-login-close:hover { color: var(--fg); }
+.hack-login-form {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.hack-login-title {
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    color: var(--accent);
+}
+.hack-login-hint {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: -8px;
+}
+.hack-login-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+.hack-login-form input {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--fg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+}
+.hack-login-form input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+.hack-login-submit {
+    margin-top: 6px;
+    padding: 12px;
+    background: var(--accent);
+    color: #04110a;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+.hack-login-submit:hover { filter: brightness(1.1); }
+.hack-login-msg {
+    min-height: 18px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #ff5555;
+}
+
+.hack-final-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: #ff0000;
+    z-index: 20000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    animation: hackFinalBlink 0.15s infinite;
+}
+.hack-final-overlay.active { display: flex; }
+.hack-final-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 3rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    padding: 0 20px;
+}
+@keyframes hackFinalBlink {
+    0%, 32% { background: #ff0000; color: #ffffff; }
+    33%, 65% { background: #000000; color: #ffffff; }
+    66%, 100% { background: #ffffff; color: #000000; }
+}
+@media (max-width: 600px) {
+    .hack-final-text { font-size: 1.8rem; }
+}
