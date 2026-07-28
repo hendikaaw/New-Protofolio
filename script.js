@@ -108,8 +108,16 @@ function initSnake() {
     isGaming = true; input.disabled = true;
     document.getElementById('term-input-container').style.display = 'none';
 
-    print("<div id='snake-container'><pre id='snake-board' style='color:var(--accent); font-family:monospace; line-height:1; margin:10px 0;'></pre><div id='snake-score' style='color:var(--fg); font-weight:bold;'>Score: 0</div><div style='color:var(--muted); font-size:0.8rem; margin-bottom:10px;'>Use Arrow Keys to move. Press 'q' to quit</div></div>");
+    print("<div id='snake-container' style='display:flex; flex-direction:column; align-items:center;'><pre id='snake-board' style='color:var(--accent); font-family:monospace; line-height:1; margin:10px 0;'></pre><div id='snake-score' style='color:var(--fg); font-weight:bold;'>Score: 0</div><div style='color:var(--muted); font-size:0.8rem; margin-bottom:10px;'>Use Arrow Keys to move. Press 'q' to quit</div></div>");
     snakeGame.boardElement = document.getElementById('snake-board');
+
+    // SCROLL OTOMATIS KE TENGAH SNAKE GAME
+    setTimeout(() => {
+        const snakeContainer = document.getElementById('snake-container');
+        if (snakeContainer) {
+            snakeContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }, 50);
 
     snakeInterval = setInterval(gameLoop, 100);
 }
@@ -179,7 +187,9 @@ function updatePrompt() {
     document.getElementById('term-prompt').style.color = isRoot ? "#ff5555" : "var(--accent)";
 }
 
-let geminiHistory = [];
+// MEMORY STATE AI ASSISTANT
+let aiHistory = [];
+
 const shellCommands = {
     'help': {
         desc: 'Show available commands', run: () => {
@@ -295,62 +305,118 @@ const shellCommands = {
             }, 800);
         }
     },
-    'gemini': { desc: 'Chat with AI', run: async (args) => {
-        if (args.length === 0) { print("<span style='color:var(--muted);'>Usage: gemini [message] or gemini --clear</span>"); return; }
+    'ai': { desc: 'Chat dengan AI Assistant', run: async (args) => {
+        if (args.length === 0) { print("<span style='color:var(--muted);'>Usage: ai [pesan] or ai --clear</span>"); return; }
         
         if (args[0] === '--clear') {
-            geminiHistory = [];
-            print("<span style='color:var(--gemini);'>[System]: Memory cleared. Gemini forgot the previous context.</span>");
+            aiHistory = [];
+            print("<span style='color:var(--gemini);'>[System]: Memori dibersihkan. AI lupa obrolan sebelumnya.</span>");
             return;
         }
 
         const msg = args.join(" ");
-        geminiHistory.push({ role: "user", parts: [{ text: msg }] });
+        aiHistory.push({ role: "user", parts: [{ text: msg }] });
 
-        print(`<span style="color:var(--gemini); font-style:italic;" id="gemini-loading">Gemini is thinking...</span>`);
+        print(`<span style="color:var(--gemini); font-style:italic;" id="ai-loading">AI sedang berpikir...</span>`);
         input.disabled = true;
 
         try {
             const response = await fetch('https://ai-backend-zeta-five.vercel.app/api/gemini', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ history: geminiHistory })
+                body: JSON.stringify({ history: aiHistory })
             });
 
             const data = await response.json();
 
-            // Pengecekan jika Google merespons dengan error (misal API Key invalid)
-            if (data.error) {
-                throw new Error(`Google API Error: ${data.error.message}`);
+            if (data.error || data.status === false) {
+                throw new Error(data.message || (data.error ? data.error.message : "Error server"));
             }
 
-            // Pengecekan jika candidates kosong/undefined
-            if (!data.candidates || data.candidates.length === 0 || !data.candidates[0].content) {
-                throw new Error(`Format balasan kosong. Pastikan GEMINI_API_KEY di Vercel aktif dan sudah di-Redeploy.`);
+            let reply = "";
+            if (data.response) {
+                reply = data.response;
+            } else if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                reply = data.candidates[0].content.parts[0].text;
+            } else {
+                throw new Error("Format balasan dari server tidak valid.");
             }
 
-            const reply = data.candidates[0].content.parts[0].text;
+            aiHistory.push({ role: "model", parts: [{ text: reply }] });
 
-            geminiHistory.push({ role: "model", parts: [{ text: reply }] });
+            if (document.getElementById('ai-loading')) document.getElementById('ai-loading').remove();
+            
+            const replyId = 'ai-reply-' + Date.now();
+            print(`<br><span style="color:var(--gemini); font-weight:bold;">[AI]:</span> <span id="${replyId}" style="color:var(--fg);"></span><br>`);
+            
+            let formattedReply = reply
+                .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" style="color:var(--accent); text-decoration:underline;">$1</a>')
+                .replace(/\n/g, '<br>');
 
-            if (document.getElementById('gemini-loading')) document.getElementById('gemini-loading').remove();
-            
-            const replyId = 'gemini-reply-' + Date.now();
-            print(`<br><span style="color:var(--gemini); font-weight:bold;">[Gemini]:</span> <span id="${replyId}" style="color:var(--fg);"></span><br>`);
-            
-            const formattedReply = reply.replace(/\n/g, '<br>');
-            await printTypewriter(formattedReply, replyId, 15);
+            await printTypewriter(formattedReply, replyId, 10);
 
         } catch (error) {
-            console.error("Gemini Error:", error);
-            if (document.getElementById('gemini-loading')) document.getElementById('gemini-loading').remove();
+            console.error("AI Error:", error);
+            if (document.getElementById('ai-loading')) document.getElementById('ai-loading').remove();
             print(`<span style="color:#ff5555">[Error]: ${error.message}</span>`);
-            geminiHistory.pop();
+            aiHistory.pop();
         }
 
         input.disabled = false;
         input.focus();
     }},
+    'reviews': {
+        desc: 'Buka halaman ulasan & penilaian',
+        run: () => {
+            print("<span style='color:var(--muted);'>Membuka halaman ulasan...</span>");
+            navigate('reviews');
+        }
+    },
+    'matrix': {
+        desc: 'Efek hujan kode Digital Matrix',
+        run: () => {
+            print("<span style='color:#50fa7b;'>Wake up, Neo... Initiating Matrix stream.</span>");
+            const canvas = document.createElement('canvas');
+            canvas.style.position = 'fixed';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100vw';
+            canvas.style.height = '100vh';
+            canvas.style.zIndex = '99999';
+            canvas.style.pointerEvents = 'none';
+            document.body.appendChild(canvas);
+            
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const chars = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%&*';
+            const fontSize = 14;
+            const columns = canvas.width / fontSize;
+            const drops = Array(Math.floor(columns)).fill(1);
+            
+            let frames = 0;
+            const matrixInterval = setInterval(() => {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#0f0';
+                ctx.font = fontSize + 'px monospace';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
+                }
+                
+                frames++;
+                if (frames > 300) {
+                    clearInterval(matrixInterval);
+                    canvas.remove();
+                }
+            }, 33);
+        }
+    },
     'neofetch': {
         desc: 'System info', run: () => {
             const ascii = `
@@ -445,14 +511,26 @@ hamburgerBtn.addEventListener('click', () => { hamburgerBtn.classList.toggle('ac
 let isAnimating = false;
 function navigate(targetPage) {
     if (isAnimating) return; isAnimating = true; const wipeTransition = document.getElementById('wipe-transition'); wipeTransition.classList.remove('reset'); wipeTransition.classList.add('in');
+    
+    // Auto-scroll ke atas saat ganti page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     setTimeout(() => {
         document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-        const targetEl = document.getElementById(targetPage + '-page'); targetEl.classList.add('active'); scrambleText(targetEl.querySelector('.scramble-text'));
+        const targetEl = document.getElementById(targetPage + '-page'); 
+        if (targetEl) {
+            targetEl.classList.add('active'); 
+            const scrambleEl = targetEl.querySelector('.scramble-text');
+            if (scrambleEl) scrambleText(scrambleEl);
+        }
         document.querySelectorAll('nav a').forEach(link => link.classList.remove('active'));
         const navId = document.getElementById('nav-' + targetPage); if (navId) navId.classList.add('active');
         const statusPath = document.getElementById('status-path'); if (statusPath) statusPath.innerHTML = '<i class="fa-regular fa-folder-open"></i> ~/portfolio/' + targetPage;
         if (window.innerWidth <= 768) { hamburgerBtn.classList.remove('active'); navbar.classList.remove('show'); }
         if (targetPage === 'terminal' && !isVim && !isGaming) document.getElementById('cmd-input').focus();
+        
+        if (targetPage === 'reviews') loadReviews();
+
         wipeTransition.classList.remove('in'); wipeTransition.classList.add('out');
         setTimeout(() => { wipeTransition.classList.remove('out'); wipeTransition.classList.add('reset'); isAnimating = false; }, 600);
     }, 500);
@@ -460,31 +538,26 @@ function navigate(targetPage) {
 
 // CORE INPUT LOGIC
 const input = document.getElementById('cmd-input'); const output = document.getElementById('output'); const terminalBody = document.getElementById('terminal-body');
-const fakeNavCommands = ['about', 'experience', 'certificates', 'projects', 'contact'];
+const fakeNavCommands = ['about', 'experience', 'certificates', 'projects', 'reviews', 'contact'];
 let cmdHistory = []; let historyIndex = -1;
 
 function print(text) { const div = document.createElement('div'); div.style.marginBottom = '2px'; div.innerHTML = text; output.appendChild(div); if (terminalBody) terminalBody.scrollTop = terminalBody.scrollHeight; }
 
-// Fungsi khusus untuk efek mengetik elemen HTML
 function printTypewriter(htmlContent, containerId, speed = 15) {
     return new Promise((resolve) => {
         const container = document.getElementById(containerId);
         if (!container) { resolve(); return; }
 
-        // Karena respons Gemini mungkin memiliki tag HTML (seperti <br>),
-        // kita gunakan browser untuk memecahnya menjadi node, bukan karakter mentah.
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = htmlContent;
         
         let i = 0;
-        // Kumpulkan semua text node dan HTML element agar bisa diketik dengan benar
         const nodes = Array.from(tempDiv.childNodes);
         
         function typeNode() {
             if (i < nodes.length) {
                 const node = nodes[i];
                 if (node.nodeType === Node.TEXT_NODE) {
-                    // Jika teks biasa, ketik karakter per karakter
                     let charIndex = 0;
                     const text = node.textContent;
                     const textNode = document.createTextNode('');
@@ -494,7 +567,7 @@ function printTypewriter(htmlContent, containerId, speed = 15) {
                         if (charIndex < text.length) {
                             textNode.textContent += text.charAt(charIndex);
                             charIndex++;
-                            if (terminalBody) terminalBody.scrollTop = terminalBody.scrollHeight;
+                            if (terminalBody) terminalBody.scrollTo({ top: terminalBody.scrollHeight, behavior: 'smooth' });
                             setTimeout(typeChar, speed);
                         } else {
                             i++;
@@ -503,14 +576,13 @@ function printTypewriter(htmlContent, containerId, speed = 15) {
                     }
                     typeChar();
                 } else {
-                    // Jika elemen HTML (misal <br>), langsung tambahkan
                     container.appendChild(node.cloneNode(true));
                     i++;
-                    if (terminalBody) terminalBody.scrollTop = terminalBody.scrollHeight;
-                    setTimeout(typeNode, speed); // Jeda singkat setelah tag HTML
+                    if (terminalBody) terminalBody.scrollTo({ top: terminalBody.scrollHeight, behavior: 'smooth' });
+                    setTimeout(typeNode, speed);
                 }
             } else {
-                resolve(); // Animasi selesai
+                resolve();
             }
         }
         
@@ -576,12 +648,7 @@ input.addEventListener('keydown', function (e) {
     }
 });
 
-/* ======================================================== */
-/* HACK LOGIN EASTER EGG                                    */
-/* Simulasi murni di browser: tidak ada database/server     */
-/* sungguhan. Kalau field diisi pola khas SQL injection,    */
-/* dianggap "berhasil membobol" untuk kebutuhan prank.      */
-/* ======================================================== */
+// HACK LOGIN EASTER EGG
 const hackLoginOverlay = document.getElementById('hackLoginOverlay');
 const hackLoginPanel = document.getElementById('hackLoginPanel');
 const hackLoginClose = document.getElementById('hackLoginClose');
@@ -605,17 +672,7 @@ if (hackLoginOverlay) hackLoginOverlay.addEventListener('click', (e) => { if (e.
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && hackLoginOverlay.classList.contains('active')) closeHackLogin(); });
 
 const sqlInjectionPatterns = [
-    /'\s*or\s*'?\s*1\s*=\s*1/i,
-    /"\s*or\s*"?\s*1\s*=\s*1/i,
-    /or\s+1\s*=\s*1/i,
-    /'\s*=\s*'/,
-    /--/,
-    /#/,
-    /\/\*/,
-    /;\s*drop\s+table/i,
-    /union\s+select/i,
-    /admin'\s*--/i,
-    /'\s*or\s*true/i
+    /'\s*or\s*'?\s*1\s*=\s*1/i, /"\s*or\s*"?\s*1\s*=\s*1/i, /or\s+1\s*=\s*1/i, /'\s*=\s*'/, /--/, /#/, /\/\*/, /;\s*drop\s+table/i, /union\s+select/i, /admin'\s*--/i, /'\s*or\s*true/i
 ];
 function looksLikeSqlInjection(value) {
     if (!value) return false;
@@ -634,6 +691,106 @@ if (hackLoginForm) {
             return;
         }
         if (hackLoginMsg) hackLoginMsg.textContent = 'Access denied. Invalid credentials.';
+    });
+}
+
+// SOUND EFFECTS (Web Audio API)
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playKeySound() {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600 + Math.random() * 200, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.015, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.04);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.04);
+}
+
+document.getElementById('cmd-input').addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== 'Backspace') playKeySound();
+});
+
+// GOOGLE SHEETS REVIEW LOGIC
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxYYEn-jVaXq2qGxRf9MkSsDnhKrSijZzr5uP3YufPtI2avHcrT5Zi1Qfp0OmvTNcAQ/exec";
+
+async function loadReviews() {
+    const listEl = document.getElementById('reviewsList');
+    if (!listEl) return;
+    
+    listEl.innerHTML = '<span style="color:var(--muted);">Memuat ulasan...</span>';
+
+    try {
+        const res = await fetch(SCRIPT_URL, {
+            method: 'GET',
+            redirect: 'follow'
+        });
+        
+        const data = await res.json();
+        
+        if (!data || !Array.isArray(data) || data.length === 0) {
+            listEl.innerHTML = '<span style="color:var(--muted);">Belum ada ulasan. Jadilah yang pertama!</span>';
+            return;
+        }
+        
+        listEl.innerHTML = data.reverse().map(item => `
+            <div style="background: var(--hover); border: 1px solid var(--border); padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                    <strong style="color: var(--accent); font-size: 1.05rem;">${item.nama || 'Anonim'}</strong>
+                    <span style="font-size:0.8rem; color:var(--muted);">${item.tanggal || ''}</span>
+                </div>
+                <div style="font-size: 0.9rem; margin-bottom: 6px;">Rating: ${'⭐'.repeat(item.rating || 5)}</div>
+                <p style="font-size: 0.95rem; color: var(--fg); margin: 0; line-height: 1.5;">"${item.pesan || ''}"</p>
+            </div>
+        `).join('');
+    } catch (e) {
+        console.error("Fetch Review Error:", e);
+        listEl.innerHTML = '<span style="color:#ff5555;">Gagal memuat ulasan. Pastikan Google Script di-deploy ke "Anyone".</span>';
+    }
+}
+
+// Form Submit Event Handler
+const revForm = document.getElementById('reviewForm');
+if (revForm) {
+    revForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('btnSubmitReview');
+        const status = document.getElementById('reviewStatus');
+        
+        const payload = {
+            nama: document.getElementById('revNama').value,
+            rating: document.getElementById('revRating').value,
+            pesan: document.getElementById('revPesan').value
+        };
+        
+        btn.disabled = true;
+        btn.innerText = "Mengirim...";
+        status.innerHTML = `<span style="color:var(--muted);">Sedang menyimpan ke database...</span>`;
+        
+        try {
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            
+            status.innerHTML = `<span style="color:#50fa7b;">Terima kasih! Ulasan kamu berhasil disimpan.</span>`;
+            revForm.reset();
+            
+            setTimeout(() => {
+                loadReviews();
+            }, 1500);
+        } catch (err) {
+            console.error("Submit Review Error:", err);
+            status.innerHTML = `<span style="color:#ff5555;">Gagal mengirim ulasan. Coba lagi.</span>`;
+        }
+        
+        btn.disabled = false;
+        btn.innerText = "Kirim Penilaian";
     });
 }
 
