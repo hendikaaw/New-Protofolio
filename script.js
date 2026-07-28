@@ -482,13 +482,51 @@ items.forEach(item => {
 });
 
 // DRAGGABLE TERMINAL
-const termWindow = document.getElementById('terminal-window'); const termHeader = document.getElementById('term-header');
-let isDragging = false; let dragStartX, dragStartY; let termStartX = 0, termStartY = 0;
+const termWindow = document.getElementById('terminal-window'); 
+const termHeader = document.getElementById('term-header');
+
+let isDragging = false; 
+let dragStartX, dragStartY; 
+let termStartX = 0, termStartY = 0;
+
 if (window.innerWidth > 768) {
     termHeader.style.cursor = 'grab';
-    termHeader.addEventListener('mousedown', (e) => { if (isRoot) return; isDragging = true; termHeader.style.cursor = 'grabbing'; dragStartX = e.clientX; dragStartY = e.clientY; e.preventDefault(); });
-    document.addEventListener('mousemove', (e) => { if (!isDragging || isRoot) return; const dx = e.clientX - dragStartX; const dy = e.clientY - dragStartY; termWindow.style.transform = `translate(${termStartX + dx}px, ${termStartY + dy}px)`; });
-    document.addEventListener('mouseup', (e) => { if (isDragging && !isRoot) { isDragging = false; termHeader.style.cursor = 'grab'; termStartX += e.clientX - dragStartX; termStartY += e.clientY - dragStartY; } });
+    
+    termHeader.addEventListener('mousedown', (e) => { 
+        if (isRoot) return; 
+        isDragging = true; 
+        termHeader.style.cursor = 'grabbing'; 
+        
+        // Mematikan transisi CSS sementara saat digeser agar tidak lag/recoil
+        termWindow.style.transition = 'none';
+        
+        dragStartX = e.clientX; 
+        dragStartY = e.clientY; 
+        e.preventDefault(); 
+    });
+    
+    document.addEventListener('mousemove', (e) => { 
+        if (!isDragging || isRoot) return; 
+        
+        const dx = e.clientX - dragStartX; 
+        const dy = e.clientY - dragStartY; 
+        
+        termWindow.style.transform = `translate3d(${termStartX + dx}px, ${termStartY + dy}px, 0)`; 
+    });
+    
+    document.addEventListener('mouseup', (e) => { 
+        if (isDragging && !isRoot) { 
+            isDragging = false; 
+            termHeader.style.cursor = 'grab'; 
+            
+            // Simpan posisi terakhir
+            termStartX += e.clientX - dragStartX; 
+            termStartY += e.clientY - dragStartY; 
+            
+            // Kembalikan transisi tema
+            termWindow.style.transition = 'background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease';
+        } 
+    });
 }
 
 function updateTime() {

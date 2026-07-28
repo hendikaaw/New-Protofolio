@@ -131,7 +131,7 @@ nav a.active { color: var(--fg); background: var(--hover); border: 1px solid var
 nav a.active i { opacity: 1; color: var(--accent); }
 
 /* MAIN CONTAINER */
-main { max-width: 900px; margin: 30px auto 0 auto; padding: 20px; position: relative; z-index: 1; overflow-x: hidden; }
+main { max-width: 900px; margin: 30px auto 0 auto; padding: 20px; position: relative; z-index: 1; }
 .page { display: none; }
 .page.active { display: block; animation: contentReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 @keyframes contentReveal { from { opacity: 0; transform: translateY(15px) scale(0.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
@@ -258,20 +258,30 @@ pre { white-space: pre-wrap; word-wrap: break-word; }
     .hamburger.active span:nth-child(2) { opacity: 0; } 
     .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
     
-    main { padding: 12px; margin-top: 10px; width: 100%; overflow-x: hidden; } 
+    main { padding: 12px; margin-top: 10px; width: 100%; }
     .hero-text h1 { font-size: 1.5rem; } 
     
-    /* 2. FIX TERMINAL KEPOTONG (Sesuaikan dengan viewport HP) */
     .terminal { 
-        height: calc(100vh - 220px); /* Dinamis tanpa terpotong di HP */
-        min-height: 300px; 
-        transform: none !important; 
-        backdrop-filter: blur(5px); /* Sangat ringan u/ GPU HP */
-        -webkit-backdrop-filter: blur(5px);
-        box-shadow: none; 
-        border-radius: 12px;
-        width: 100%;
-    } 
+    background: var(--term-bg); 
+    backdrop-filter: blur(20px); 
+    -webkit-backdrop-filter: blur(20px); 
+    border: 1px solid var(--glass-border); 
+    border-radius: 16px; 
+    font-family: 'JetBrains Mono', monospace; 
+    font-size: 0.88rem; 
+    display: flex; 
+    flex-direction: column; 
+    height: 60vh; 
+    min-height: 420px; 
+    box-shadow: var(--shadow); 
+    position: relative; 
+    z-index: 10; 
+    overflow: hidden; 
+    width: 100%;
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; 
+    
+    will-change: transform;
+}
     
     .resume-item { flex-direction: column; gap: 0.4rem; } 
     .resume-date { font-size: 0.82rem; } 
